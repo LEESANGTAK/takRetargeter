@@ -95,28 +95,28 @@ class Retargeter(object):
                 if trg and cmds.objExists(trg):
                     cmds.select(trg, r=True)
                     cmds.DeleteConstraints(trg)
-                    poleVectorNodes = cmds.listConnections(trg, d=False, type='poleVector')
-                    if poleVectorNodes:
-                        cmds.delete(poleVectorNodes)
 
     @staticmethod
     def connectIkLimbCtrls(startObj, middleObj, endObj, ctrl, poleVectorCtrl):
         # Convert to pymel node object
-        startObj = pm.PyNode(startObj) if isinstance(startObj, basestring) else startObj
-        middleObj = pm.PyNode(middleObj) if isinstance(middleObj, basestring) else middleObj
-        endObj = pm.PyNode(endObj) if isinstance(endObj, basestring) else endObj
-        ctrl = pm.PyNode(ctrl) if isinstance(ctrl, basestring) else ctrl
-        poleVectorCtrl = pm.PyNode(poleVectorCtrl) if isinstance(poleVectorCtrl, basestring) else poleVectorCtrl
+        startObj = pm.PyNode(startObj)
+        middleObj = pm.PyNode(middleObj)
+        endObj = pm.PyNode(endObj)
+        ctrl = pm.PyNode(ctrl)
+        poleVectorCtrl = pm.PyNode(poleVectorCtrl)
 
-        poleVectorCtrl.inheritsTransform.set(False)
         pm.pointConstraint(endObj, ctrl, mo=True)
 
-        poleVectorNode = pm.createNode('poleVector')
-
-        startObj.worldMatrix >> poleVectorNode.startWorldMatrix
-        middleObj.worldMatrix >> poleVectorNode.middleWorldMatrix
-        endObj.worldMatrix >> poleVectorNode.endWorldMatrix
-        poleVectorNode.outVector >> poleVectorCtrl.translate
+        # Pole vector connection
+        poleVectorLocator = '{0}_poleVector_loc'.format(poleVectorCtrl.name())
+        if not pm.objExists(poleVectorLocator):
+            poleVectorLocator = pm.spaceLocator(n='{0}_poleVector_loc'.format(poleVectorCtrl.name()))
+            poleVectorNode = pm.createNode('poleVector')
+            startObj.worldMatrix >> poleVectorNode.startWorldMatrix
+            middleObj.worldMatrix >> poleVectorNode.middleWorldMatrix
+            endObj.worldMatrix >> poleVectorNode.endWorldMatrix
+            poleVectorNode.outVector >> poleVectorLocator.translate
+        pm.pointConstraint(poleVectorLocator, poleVectorCtrl, mo=False)
 
     def bake(self):
         bakeCtrls = []

@@ -19,6 +19,8 @@ class CharDefItem(QGraphicsItem):
     MIRROR_STR_TABLE = {
         'L': 'R', 'R': 'L',
         'l': 'r', 'r': 'l',
+        'LF': 'RT', 'RT': 'LF',
+        'Left': 'Right', 'Right': 'Left'
     }
 
     def __init__(self, parent, name, charDef, size, posX, posY):

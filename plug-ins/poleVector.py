@@ -54,7 +54,7 @@ class PoleVector(OpenMayaMPx.MPxNode):
         mAttr.setStorable(True)
         mAttr.setReadable(False)
 
-        cls.aLength = nAttr.create('length', 'length', OpenMaya.MFnNumericData.kFloat, 1.0)
+        cls.aLength = nAttr.create('length', 'length', OpenMaya.MFnNumericData.kFloat, 50.0)
         nAttr.setKeyable(True)
         nAttr.setStorable(True)
         nAttr.setReadable(False)

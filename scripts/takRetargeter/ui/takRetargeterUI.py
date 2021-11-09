@@ -178,6 +178,10 @@ class TakRetargeterUI(QDialog):
         self.refreshComboBox()
 
     def setTPose(self):
+        srcDef = self.srcComboBox.currentText()
+        srcDef = self.retargeter.charDefs.get(srcDef)
+        srcDef.setTPose()
+
         selCharDef = self.charComboBox.currentText()
         charDef = self.retargeter.charDefs.get(selCharDef)
         charDef.setTPose()
