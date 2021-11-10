@@ -61,6 +61,7 @@ class TakRetargeterUI(QDialog):
         self.charComboBox = QComboBox()
         self.charComboBox.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.srcComboBox = QComboBox()
+        self.srcComboBox.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
         self.createCharDefBtn = QAction(QIcon(':addCreateGeneric.png'), 'Create Character Definition', self)
         self.loadCharDefBtn = QAction(QIcon(':fileOpen.png'), 'Load Character Definition', self)
@@ -174,6 +175,8 @@ class TakRetargeterUI(QDialog):
 
     def delCharDef(self):
         selCharDef = self.charComboBox.currentText()
+        if selCharDef == 'None':
+            return
         self.retargeter.charDefs.pop(selCharDef)
         self.refreshComboBox()
 

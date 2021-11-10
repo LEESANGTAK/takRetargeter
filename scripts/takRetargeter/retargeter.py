@@ -1,9 +1,5 @@
 from weakref import WeakKeyDictionary
-import types
-
-import maya.cmds as cmds
 import pymel.core as pm
-
 from charDefinition import CharDefinition
 
 
@@ -40,8 +36,8 @@ class Retargeter(object):
             'leg_r': ['thigh_r', 'calf_r', 'foot_r']
         }
 
-        if not cmds.pluginInfo(Retargeter.PLUG_IN, q=True, loaded=True):
-            cmds.loadPlugin(Retargeter.PLUG_IN)
+        if not pm.pluginInfo(Retargeter.PLUG_IN, q=True, loaded=True):
+            pm.loadPlugin(Retargeter.PLUG_IN)
 
     def connect(self):
         self.targetCharDef.setTPose()
@@ -54,14 +50,14 @@ class Retargeter(object):
             if isinstance(sourceAttrVal, dict):
                 src = sourceAttrVal.get('name')
                 trg = targetAttrVal.get('name')
-                if src and cmds.objExists(src) and trg and cmds.objExists(trg):
+                if src and pm.objExists(src) and trg and pm.objExists(trg):
                     if attr == 'root':
-                        cmds.parentConstraint(src, trg, mo=True)
+                        pm.parentConstraint(src, trg, mo=True)
                     else:
                         try:
-                            cmds.orientConstraint(src, trg, mo=True)
+                            pm.orientConstraint(src, trg, mo=True)
                             if attr == 'pelvis':
-                                cmds.pointConstraint(src, trg, mo=True)
+                                pm.pointConstraint(src, trg, mo=True)
                         except:
                             pass
 
@@ -82,19 +78,15 @@ class Retargeter(object):
 
                 Retargeter.connectIkLimbCtrls(srcStartObj, srcMiddleObj, srcEndObj, ctrl, poleVectorCtrl)
 
-        # # Display warning for failed connection
-        # for src, trg in connectionFailInfo.items():
-        #     cmds.warning('"{0} -> {1}" connetion failed.'.format(src, trg))
-
     def disconnect(self):
         publicAttrs = [member for member in dir(self.targetCharDef) if not member.startswith('_')]
         for attr in publicAttrs:
             targetAttrVal = getattr(self.targetCharDef, attr)
             if isinstance(targetAttrVal, dict):
                 trg = targetAttrVal.get('name')
-                if trg and cmds.objExists(trg):
-                    cmds.select(trg, r=True)
-                    cmds.DeleteConstraints(trg)
+                if trg and pm.objExists(trg):
+                    pm.select(trg, r=True)
+                    pm.mel.DeleteConstraints(trg)
 
     @staticmethod
     def connectIkLimbCtrls(startObj, middleObj, endObj, ctrl, poleVectorCtrl):
@@ -126,12 +118,22 @@ class Retargeter(object):
             targetAttrVal = getattr(self.targetCharDef, attr)
             if isinstance(targetAttrVal, dict):
                 trg = targetAttrVal.get('name')
-                if trg and cmds.objExists(trg):
+                if trg and pm.objExists(trg):
                     bakeCtrls.append(trg)
 
-        cmds.select(bakeCtrls, r=True)
-        minFrame = cmds.playbackOptions(q=True, min=True)
-        maxFrame = cmds.playbackOptions(q=True, max=True)
-        cmds.bakeResults(simulation=True, t=(minFrame, maxFrame))
+        # Get frame range
+        minFrame = pm.playbackOptions(q=True, min=True)
+        maxFrame = pm.playbackOptions(q=True, max=True)
+
+        # Bake keyframes with viewport refresh off
+        pm.refresh(su=True)
+        pm.select(bakeCtrls, r=True)
+        pm.bakeResults(simulation=True, t=(minFrame, maxFrame))
+        pm.refresh(su=False)
 
         self.disconnect()
+
+        # Apply euler filter
+        pm.select(bakeCtrls, r=True)
+        pm.mel.filterCurve()
+        pm.select(cl=True)
