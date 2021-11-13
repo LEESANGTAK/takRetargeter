@@ -61,6 +61,7 @@ class TakRetargeterUI(QDialog):
         self.charComboBox = QComboBox()
         self.charComboBox.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.srcComboBox = QComboBox()
+        self.srcComboBox.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
         self.createCharDefBtn = QAction(QIcon(':addCreateGeneric.png'), 'Create Character Definition', self)
         self.loadCharDefBtn = QAction(QIcon(':fileOpen.png'), 'Load Character Definition', self)
@@ -139,14 +140,15 @@ class TakRetargeterUI(QDialog):
         self.charComboBox.setCurrentText(newCharName)
 
     def loadCharDef(self):
-        filePath, self.selectedFilter = QFileDialog.getOpenFileName(self, 'Select File', '', self.FILE_FILTERS, self.selectedFilter)
-        if not filePath:
+        filePaths, self.selectedFilter = QFileDialog.getOpenFileNames(self, 'Select File', '', self.FILE_FILTERS, self.selectedFilter)
+        if not filePaths:
             return False
-        charDef = charDefinition.CharDefinition()
-        charDef.load(filePath)
-        self.retargeter.charDefs[charDef.name] = charDef
-        self.refreshComboBox()
-        self.charComboBox.setCurrentText(charDef.name)
+        for filePath in filePaths:
+            charDef = charDefinition.CharDefinition()
+            charDef.load(filePath)
+            self.retargeter.charDefs[charDef.name] = charDef
+            self.refreshComboBox()
+            self.charComboBox.setCurrentText(charDef.name)
 
     @ staticmethod
     def getNamespaces():
@@ -174,6 +176,8 @@ class TakRetargeterUI(QDialog):
 
     def delCharDef(self):
         selCharDef = self.charComboBox.currentText()
+        if selCharDef == 'None':
+            return
         self.retargeter.charDefs.pop(selCharDef)
         self.refreshComboBox()
 
