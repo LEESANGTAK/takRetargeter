@@ -125,8 +125,9 @@ class CharDefinition(object):
             if not isinstance(attrInfo, types.MethodType):
                 setattr(self, attr, attrInfo)
 
-    def setTPose(self):
+    def stancePose(self):
         publicAttrs = [member for member in dir(self) if not member.startswith('_')]
+        pm.undoInfo(openChunk=True)
         for attr in publicAttrs:
             attrVal = getattr(self, attr)
             if isinstance(attrVal, dict):
@@ -145,3 +146,4 @@ class CharDefinition(object):
                             trsf.rotate.set(rotateVal)
                         except:
                             pass
+        pm.undoInfo(closeChunk=True)

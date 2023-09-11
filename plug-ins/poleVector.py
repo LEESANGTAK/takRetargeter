@@ -1,6 +1,6 @@
 """
-Author: Sangtak Lee
-Website: https://tak.ta-note.com
+Author: TAK
+Website: https://ta-note.com
 
 Created: 03/16/2020
 Updated: 05/09/2020

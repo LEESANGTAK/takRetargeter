@@ -40,8 +40,8 @@ class Retargeter(object):
             pm.loadPlugin(Retargeter.PLUG_IN)
 
     def connect(self):
-        self.targetCharDef.setTPose()
-        self.sourceCharDef.setTPose()
+        self.targetCharDef.stancePose()
+        self.sourceCharDef.stancePose()
 
         publicAttrs = [member for member in dir(self.sourceCharDef) if not member.startswith('_')]
         for attr in publicAttrs:

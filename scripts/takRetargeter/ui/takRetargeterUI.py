@@ -67,7 +67,7 @@ class TakRetargeterUI(QDialog):
         self.loadCharDefBtn = QAction(QIcon(':fileOpen.png'), 'Load Character Definition', self)
         self.saveCharDefBtn = QAction(QIcon(':fileSave.png'), 'Save Character Definition', self)
         self.delCharDefBtn = QAction(QIcon(':deleteGeneric.png'), 'Delete Character Definition', self)
-        self.setTPoseBtn = QAction(QIcon(':HIKCharacterToolStancePose.png'), 'Set T-Pose', self)
+        self.stancePoseBtn = QAction(QIcon(':HIKCharacterToolStancePose.png'), 'Stance Pose', self)
         self.connectBtn = QAction(QIcon(os.path.join(self.ICON_DIR_PATH, 'connectToCharacter.png')), 'Connect Source to Character', self)
         self.disconnectBtn = QAction(QIcon(os.path.join(self.ICON_DIR_PATH, 'disconnectFromCharacter.png')), 'Disconnect Source from Character', self)
         self.bakeBtn = QAction(QIcon(':bakeAnimation.png'), 'Bake Animation', self)
@@ -96,7 +96,7 @@ class TakRetargeterUI(QDialog):
         btnToolBar.addAction(self.loadCharDefBtn)
         btnToolBar.addAction(self.saveCharDefBtn)
         btnToolBar.addAction(self.delCharDefBtn)
-        btnToolBar.addAction(self.setTPoseBtn)
+        btnToolBar.addAction(self.stancePoseBtn)
         btnToolBar.addAction(self.connectBtn)
         btnToolBar.addAction(self.disconnectBtn)
         btnToolBar.addAction(self.bakeBtn)
@@ -113,7 +113,7 @@ class TakRetargeterUI(QDialog):
         self.loadCharDefBtn.triggered.connect(self.loadCharDef)
         self.saveCharDefBtn.triggered.connect(self.saveCharDef)
         self.delCharDefBtn.triggered.connect(self.delCharDef)
-        self.setTPoseBtn.triggered.connect(self.setTPose)
+        self.stancePoseBtn.triggered.connect(self.stancePose)
         self.connectBtn.triggered.connect(self.retargeter.connect)
         self.disconnectBtn.triggered.connect(self.retargeter.disconnect)
         self.bakeBtn.triggered.connect(self.retargeter.bake)
@@ -181,16 +181,16 @@ class TakRetargeterUI(QDialog):
         self.retargeter.charDefs.pop(selCharDef)
         self.refreshComboBox()
 
-    def setTPose(self):
+    def stancePose(self):
         srcDef = self.srcComboBox.currentText()
         srcDef = self.retargeter.charDefs.get(srcDef)
         if srcDef:
-            srcDef.setTPose()
+            srcDef.stancePose()
 
         selCharDef = self.charComboBox.currentText()
         charDef = self.retargeter.charDefs.get(selCharDef)
         if charDef:
-            charDef.setTPose()
+            charDef.stancePose()
 
     def refreshComboBox(self):
         # Remember current text
