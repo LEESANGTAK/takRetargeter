@@ -29,7 +29,7 @@ class TakRetargeterUI(QDialog):
     NAME = 'Tak Retargeter'
     VERSION = '1.0.1'
 
-    ICON_DIR_PATH = __file__.split('scripts')[0] + 'icons'
+    ICON_DIR_PATH = __file__.rsplit('scripts', 1)[0] + 'icons'
     ICON_SIZE = 30
     FILE_FILTERS = 'Character Definition (*.cd);;All Files (*.*)'
     FULLBODY_IMAGE_WIDTH = 379
