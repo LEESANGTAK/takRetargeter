@@ -85,8 +85,7 @@ class Retargeter(object):
             if isinstance(targetAttrVal, dict):
                 trg = targetAttrVal.get('name')
                 if trg and pm.objExists(trg):
-                    pm.select(trg, r=True)
-                    pm.mel.DeleteConstraints(trg)
+                    pm.delete(pm.listConnections(trg, d=False, type='constraint'))
 
     @staticmethod
     def connectIkLimbCtrls(startObj, middleObj, endObj, ctrl, poleVectorCtrl):
