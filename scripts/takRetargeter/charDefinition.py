@@ -22,7 +22,7 @@ class Property(object):
         return returnVal
 
     def __set__(self, obj, val):
-        if isinstance(val, str) or isinstance(val, unicode):  # When set with name
+        if isinstance(val, str):  # When set with name
             self.__name[obj] = val
             self.__translate[obj] = cmds.getAttr('%s.translate' % val)[0]
             self.__rotate[obj] = cmds.getAttr('%s.rotate' % val)[0]

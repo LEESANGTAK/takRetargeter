@@ -1,6 +1,6 @@
 from weakref import WeakKeyDictionary
 import pymel.core as pm
-from charDefinition import CharDefinition
+from .charDefinition import CharDefinition
 
 
 class CharDefProperty(object):

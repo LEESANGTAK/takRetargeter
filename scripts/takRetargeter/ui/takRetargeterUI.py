@@ -1,3 +1,5 @@
+from imp import reload
+
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
@@ -11,8 +13,8 @@ from shiboken2 import wrapInstance
 
 from .. import charDefinition
 from .. import retargeter
-import charDefItem
-import sceneSwitcher
+from . import charDefItem
+from . import sceneSwitcher
 
 reload(charDefinition)
 reload(charDefItem)
@@ -22,7 +24,7 @@ reload(sceneSwitcher)
 
 def getMayaMainWin():
     mayaWinPtr = omui.MQtUtil.mainWindow()
-    return wrapInstance(long(mayaWinPtr), QWidget)
+    return wrapInstance(int(mayaWinPtr), QWidget)
 
 
 class TakRetargeterUI(QDialog):
