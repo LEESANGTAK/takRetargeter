@@ -121,7 +121,7 @@ class CharDefinition(object):
         with open(filename, 'r') as f:
             charDefInfo = json.load(f)
 
-        for attr, attrInfo in charDefInfo.iteritems():
+        for attr, attrInfo in charDefInfo.items():
             if not isinstance(attrInfo, types.MethodType):
                 setattr(self, attr, attrInfo)
 
