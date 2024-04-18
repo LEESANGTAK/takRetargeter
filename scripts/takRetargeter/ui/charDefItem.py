@@ -79,10 +79,10 @@ class CharDefItem(QGraphicsItem):
             return
 
         mirrorMatchMode = self.parent.mirrorMatchBtn.isChecked()
-        rightButtonPressed = event.button() == Qt.RightButton
+        leftButtonPressed = event.button() == Qt.LeftButton
 
         if self.assignObj:
-            if rightButtonPressed:
+            if leftButtonPressed:
                 if cmds.objExists(self.assignObj):
                     cmds.select(self.assignObj, r=True)
                 else:
@@ -92,7 +92,7 @@ class CharDefItem(QGraphicsItem):
                 if mirrorMatchMode:
                     self.removeMirror()
         else:  # In case empty char item
-            if rightButtonPressed:
+            if leftButtonPressed:
                 return
             selObjs = cmds.ls(sl=True)
             if selObjs:
