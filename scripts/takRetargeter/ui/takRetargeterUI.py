@@ -1,5 +1,3 @@
-from imp import reload
-
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
@@ -16,11 +14,6 @@ from .. import retargeter
 from . import charDefItem
 from . import sceneSwitcher
 
-reload(charDefinition)
-reload(charDefItem)
-reload(retargeter)
-reload(sceneSwitcher)
-
 
 def getMayaMainWin():
     mayaWinPtr = omui.MQtUtil.mainWindow()
@@ -29,7 +22,7 @@ def getMayaMainWin():
 
 class TakRetargeterUI(QDialog):
     NAME = 'Tak Retargeter'
-    VERSION = '1.0.1'
+    VERSION = '1.1.1'
 
     ICON_DIR_PATH = __file__.rsplit('scripts', 1)[0] + 'icons'
     ICON_SIZE = 30
@@ -48,7 +41,6 @@ class TakRetargeterUI(QDialog):
         self.geo = None
 
         self.setWindowTitle('{0} - {1}'.format(TakRetargeterUI.NAME, TakRetargeterUI.VERSION))
-        self.setWindowFlags(self.windowFlags() ^ Qt.WindowContextHelpButtonHint)
         self.setWindowIcon(QIcon(os.path.join(self.ICON_DIR_PATH, 'takRetargeterIcon.png')))
 
         self.mirrorInfo = {}
@@ -73,6 +65,7 @@ class TakRetargeterUI(QDialog):
         self.connectBtn = QAction(QIcon(os.path.join(self.ICON_DIR_PATH, 'connectToCharacter.png')), 'Connect Source to Character', self)
         self.disconnectBtn = QAction(QIcon(os.path.join(self.ICON_DIR_PATH, 'disconnectFromCharacter.png')), 'Disconnect Source from Character', self)
         self.bakeBtn = QAction(QIcon(':bakeAnimation.png'), 'Bake Animation', self)
+        self.deleteKeyframesBtn = QAction(QIcon(':nClothCacheDelete.png'), 'Delete Animation', self)
         self.mirrorMatchBtn = QAction(QIcon(':HIKmirror.png'), 'Mirror Matching', self)
         self.mirrorMatchBtn.setCheckable(True)
         self.mirrorMatchBtn.setChecked(True)
@@ -93,7 +86,6 @@ class TakRetargeterUI(QDialog):
 
         btnToolBar = QToolBar()
         btnToolBar.setIconSize(QSize(self.ICON_SIZE, self.ICON_SIZE))
-        btnToolBar.setStyleSheet("QToolBar{spacing:10px;}")
         btnToolBar.addAction(self.createCharDefBtn)
         btnToolBar.addAction(self.loadCharDefBtn)
         btnToolBar.addAction(self.saveCharDefBtn)
@@ -102,6 +94,7 @@ class TakRetargeterUI(QDialog):
         btnToolBar.addAction(self.connectBtn)
         btnToolBar.addAction(self.disconnectBtn)
         btnToolBar.addAction(self.bakeBtn)
+        btnToolBar.addAction(self.deleteKeyframesBtn)
         btnToolBar.addAction(self.mirrorMatchBtn)
 
         mainLayout.addLayout(trgSrcDefFormLayout)
@@ -119,6 +112,7 @@ class TakRetargeterUI(QDialog):
         self.connectBtn.triggered.connect(self.retargeter.connect)
         self.disconnectBtn.triggered.connect(self.retargeter.disconnect)
         self.bakeBtn.triggered.connect(self.retargeter.bake)
+        self.deleteKeyframesBtn.triggered.connect(self.retargeter.deleteKeyframes)
 
     def setCharDef(self, text):
         charDef = self.retargeter.charDefs.get(text)

@@ -110,15 +110,7 @@ class Retargeter(object):
         pm.pointConstraint(poleVectorLocator, poleVectorCtrl, mo=False)
 
     def bake(self):
-        bakeCtrls = []
-
-        publicAttrs = [member for member in dir(self.targetCharDef) if not member.startswith('_')]
-        for attr in publicAttrs:
-            targetAttrVal = getattr(self.targetCharDef, attr)
-            if isinstance(targetAttrVal, dict):
-                trg = targetAttrVal.get('name')
-                if trg and pm.objExists(trg):
-                    bakeCtrls.append(trg)
+        bakeCtrls = self._getAllNamesInDefinition()
 
         # Get frame range
         minFrame = pm.playbackOptions(q=True, min=True)
@@ -136,3 +128,18 @@ class Retargeter(object):
         pm.select(bakeCtrls, r=True)
         pm.mel.filterCurve()
         pm.select(cl=True)
+
+    def deleteKeyframes(self):
+        bakeCtrls = self._getAllNamesInDefinition()
+        pm.cutKey(bakeCtrls)
+
+    def _getAllNamesInDefinition(self):
+        allNames = []
+        publicAttrs = [member for member in dir(self.targetCharDef) if not member.startswith('_')]
+        for attr in publicAttrs:
+            targetAttrVal = getattr(self.targetCharDef, attr)
+            if isinstance(targetAttrVal, dict):
+                trg = targetAttrVal.get('name')
+                if trg and pm.objExists(trg):
+                    allNames.append(trg)
+        return allNames

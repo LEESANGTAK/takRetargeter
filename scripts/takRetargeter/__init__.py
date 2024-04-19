@@ -1,7 +1,5 @@
 from imp import reload
 
-from . import charDefinition
-from . import retargeter
-
-reload(charDefinition)
-reload(retargeter)
+from . import charDefinition; reload(charDefinition)
+from . import retargeter; reload(retargeter)
+from . import ui; reload(ui)

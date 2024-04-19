@@ -4,7 +4,6 @@ from PySide2.QtCore import *
 
 import maya.cmds as cmds
 import maya.OpenMaya as om
-import re
 
 
 class Brush:

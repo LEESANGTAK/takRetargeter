@@ -1,0 +1,445 @@
+{
+    "ball_l": {
+        "name": "LeftToeBase",
+        "translate": [
+            -2.264095044779424e-08,
+            -6.262316959732544,
+            12.954749395587408
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "ball_r": {
+        "name": "RightToeBase",
+        "translate": [
+            2.4908184315108883e-07,
+            -6.262316967063386,
+            12.95474906433326
+        ],
+        "rotate": [
+            0.0029335975391431,
+            0.0,
+            0.0
+        ]
+    },
+    "calf_l": {
+        "name": "LeftLeg",
+        "translate": [
+            -9.79533279377165e-07,
+            -22.14635397293948,
+            -6.259487967952282e-07
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "calf_r": {
+        "name": "RightLeg",
+        "translate": [
+            9.72393069531563e-06,
+            -22.14635397293938,
+            -6.257568825329685e-07
+        ],
+        "rotate": [
+            0.0009575746631822812,
+            0.0,
+            0.0
+        ]
+    },
+    "clavicle_l": {
+        "name": "LeftShoulder",
+        "translate": [
+            7.00000348454216,
+            4.568553197577529,
+            2.067402150486812
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0006981079370363476
+        ]
+    },
+    "clavicle_r": {
+        "name": "RightShoulder",
+        "translate": [
+            -6.999996515481125,
+            4.568562280935993,
+            2.0672996975420697
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            -0.0022811859969205928
+        ]
+    },
+    "foot_l": {
+        "name": "LeftFoot",
+        "translate": [
+            -9.738639956680117e-07,
+            -18.609011573794973,
+            5.115544370326575e-07
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            7.649682486851555e-05
+        ]
+    },
+    "foot_r": {
+        "name": "RightFoot",
+        "translate": [
+            7.778078595421789e-06,
+            -18.60901157380217,
+            5.1133590650565e-07
+        ],
+        "rotate": [
+            0.0,
+            -0.0048146134722331715,
+            7.153412245110832e-05
+        ]
+    },
+    "hand_l": {
+        "name": "LeftHand",
+        "translate": [
+            10.369414902880145,
+            -8.579931204621971e-06,
+            -4.877931738533903e-07
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "hand_r": {
+        "name": "RightHand",
+        "translate": [
+            -10.369357847730498,
+            -9.72770888552077e-06,
+            -1.3662262787761392e-07
+        ],
+        "rotate": [
+            0.0,
+            -6.184684889814972e-05,
+            0.0
+        ]
+    },
+    "head": {
+        "name": "Head",
+        "translate": [
+            -5.020497212755387e-06,
+            11.07330322266202,
+            1.654317297043233
+        ],
+        "rotate": [
+            7.769225136113368e-05,
+            -0.0001774242157711583,
+            0.0
+        ]
+    },
+    "index_01_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "index_01_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "index_02_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "index_02_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "index_03_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "index_03_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "lowerarm_l": {
+        "name": "LeftForeArm",
+        "translate": [
+            12.044274760034732,
+            1.0870095650261646e-05,
+            -1.2387311187911365e-07
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            -4.000000553146322
+        ]
+    },
+    "lowerarm_r": {
+        "name": "RightForeArm",
+        "translate": [
+            -12.044350250851295,
+            -3.811352257798717e-06,
+            -1.3496906337007175e-07
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            -4.0000002888683825
+        ]
+    },
+    "middle_01_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "middle_01_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "middle_02_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "middle_02_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "middle_03_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "middle_03_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "name": "mocap",
+    "namespace": "",
+    "neck_01": {
+        "name": "Neck",
+        "translate": [
+            1.0284575725715947e-05,
+            11.51560974120693,
+            1.9470169544199931
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "pelvis": {
+        "name": "Hips",
+        "translate": [
+            0.0,
+            100.0,
+            0.0
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "pinky_01_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "pinky_01_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "pinky_02_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "pinky_02_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "pinky_03_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "pinky_03_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "ring_01_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "ring_01_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "ring_02_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "ring_02_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "ring_03_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "ring_03_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "root": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "spine_01": {
+        "name": "Spine",
+        "translate": [
+            2.4107373925654866e-06,
+            7.431739807128935,
+            -2.0616240501401863
+        ],
+        "rotate": [
+            0.0,
+            -0.0001580279828199978,
+            0.0
+        ]
+    },
+    "spine_02": {
+        "name": "Spine1",
+        "translate": [
+            -1.6877109782458275e-05,
+            12.189918518066548,
+            -1.4195120334612548
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "spine_03": {
+        "name": "Spine2",
+        "translate": [
+            3.91718352018025e-06,
+            11.884582519531264,
+            -1.0902979373927937
+        ],
+        "rotate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "thigh_l": {
+        "name": "LeftUpLeg",
+        "translate": [
+            8.910001051635607,
+            -6.2699965417164805,
+            -2.144999236436987
+        ],
+        "rotate": [
+            7.444855825800745e-05,
+            0.0,
+            6.992345170012845e-05
+        ]
+    },
+    "thigh_r": {
+        "name": "RightUpLeg",
+        "translate": [
+            -8.91000055053718,
+            -6.269996744416332,
+            -2.1450007254160135
+        ],
+        "rotate": [
+            0.0,
+            -0.0,
+            6.992345403983108e-05
+        ]
+    },
+    "thumb_01_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "thumb_01_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "thumb_02_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "thumb_02_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "thumb_03_l": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "thumb_03_r": {
+        "name": null,
+        "translate": null,
+        "rotate": null
+    },
+    "upperarm_l": {
+        "name": "LeftArm",
+        "translate": [
+            10.707250595973377,
+            -7.804490564922162e-08,
+            -1.6223712624441333e-06
+        ],
+        "rotate": [
+            -1.1543134936080084,
+            29.97949954050278,
+            -0.3090962643786372
+        ]
+    },
+    "upperarm_r": {
+        "name": "RightArm",
+        "translate": [
+            -10.70727539976498,
+            -9.256207675889527e-06,
+            6.687031888219508e-07
+        ],
+        "rotate": [
+            1.1539488976077723,
+            -29.980964759615464,
+            -0.3090085535766863
+        ]
+    }
+}
