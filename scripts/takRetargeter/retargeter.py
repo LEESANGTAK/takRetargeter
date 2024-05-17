@@ -3,6 +3,11 @@ import pymel.core as pm
 from .charDefinition import CharDefinition
 
 
+PLUG_IN = 'poleVector'
+if not pm.pluginInfo(PLUG_IN, q=True, loaded=True):
+    pm.loadPlugin(PLUG_IN)
+
+
 class CharDefProperty(object):
     def __init__(self):
         self.__val = WeakKeyDictionary()
@@ -20,7 +25,6 @@ class CharDefProperty(object):
 
 
 class Retargeter(object):
-    PLUG_IN = 'poleVector'
 
     targetCharDef = CharDefProperty()
     sourceCharDef = CharDefProperty()
@@ -35,9 +39,6 @@ class Retargeter(object):
             'leg_l': ['thigh_l', 'calf_l', 'foot_l'],
             'leg_r': ['thigh_r', 'calf_r', 'foot_r']
         }
-
-        if not pm.pluginInfo(Retargeter.PLUG_IN, q=True, loaded=True):
-            pm.loadPlugin(Retargeter.PLUG_IN)
 
     def connect(self):
         self.targetCharDef.stancePose()

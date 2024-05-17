@@ -22,7 +22,7 @@ def getMayaMainWin():
 
 class TakRetargeterUI(QDialog):
     NAME = 'Tak Retargeter'
-    VERSION = '1.1.1'
+    VERSION = '1.2.1'
 
     ICON_DIR_PATH = __file__.rsplit('scripts', 1)[0] + 'icons'
     ICON_SIZE = 30

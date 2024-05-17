@@ -1,10 +1,9 @@
 """
-Author: TAK
+Author: Tak
 Website: https://ta-note.com
 Description:
-    Drag and drop install.py file in maya viewport.
-    Shelf button will added in the current shelf tab.
-    "<moduleName>.mod" file will created in "Documents\maya\modules" directory automatically.
+    Drag and drop this file to the maya viewport.
+    "<ModuleName>.mod" file will be created in the "C:/Users/<UserName>/Documents/maya/modules" directory.
 """
 
 import os
@@ -14,67 +13,59 @@ import maya.cmds as cmds
 import maya.mel as mel
 
 
-# Need to modify depend on module
-MODULE_VERSION = '1.0.1'
-MODULE_NAME = os.path.dirname(__file__).rsplit('/', 1)[-1]
-MODULE_PATH = os.path.dirname(__file__)
+MODULE_PATH = os.path.dirname(__file__).replace('\\', '/')
+MODULE_NAME = MODULE_PATH.rsplit('/', 1)[-1]
+AVAILABLE_VERSIONS = [2022, 2023, 2024]
+MODULE_VERSION = 'any'
 SHELF_ICON_FILE = 'takRetargeterIcon.png'
-SHELF_BUTTON_COMMAND = '''
-import takRetargeter.ui as tru
-
+SHELF_BUTTON_COMMAND = '''import takRetargeter.ui as tru
 try:
     trUI.close()
 except:
     pass
-
 trUI = tru.takRetargeterUI.TakRetargeterUI()
 trUI.show()
 '''
 
 
 def onMayaDroppedPythonFile(*args, **kwargs):
-    modulesDir = getModulesDirectory()
-    createModuleFile(modulesDir)
-    addScriptPath()
-    loadPlugins()
+    removeOldInstallModule()
+    addEnvPaths()
     addShelfButtons()
+    createModuleFile()
+    cmds.confirmDialog(
+        title='Info',
+        message='"{}" module is installed successfully.\nTool icon added in the "{}" shelf.'.format(MODULE_NAME, getCurrentShelf())
+    )
 
 
-def getModulesDirectory():
-    modulesDir = None
-
-    documentDir = os.path.expanduser('~')
-    mayaAppDir = os.path.join(documentDir, 'maya')
-    modulesDir = os.path.join(mayaAppDir, 'modules')
-
-    if not os.path.exists(modulesDir):
-        os.mkdir(modulesDir)
-
-    return modulesDir
+def removeOldInstallModule():
+    foundOldInstall = False
+    for modName in sys.modules:
+        if modName == 'install':
+            foundOldInstall = True
+            break
+    if foundOldInstall:
+        del(sys.modules[modName])
 
 
-def createModuleFile(modulesDir):
-    moduleFileName = '{0}.mod'.format(MODULE_NAME)
+def addEnvPaths():
+    # Add plug-ins paths
+    pluginsPaths = mel.eval('getenv "MAYA_PLUG_IN_PATH";')
+    pluginsPaths += ';{}/plug-ins'.format(MODULE_PATH)
+    mel.eval('putenv "MAYA_PLUG_IN_PATH" "{}";'.format(pluginsPaths))
 
-    contents = '+ {0} {1} {2}'.format(MODULE_NAME, MODULE_VERSION, MODULE_PATH)
+    # Add python script paths
+    pythonPathes = [
+        '{}/scripts'.format(MODULE_PATH),
+    ]
+    for pythonPath in pythonPathes:
+        sys.path.append(pythonPath)
 
-    with open(os.path.join(modulesDir, moduleFileName), 'w') as f:
-        f.write(contents)
-
-
-def addScriptPath():
-    scriptPath = MODULE_PATH + '/scripts'
-    if not scriptPath in sys.path:
-        sys.path.append(scriptPath)
-
-
-def loadPlugins():
-    pluginsPath = os.path.join(MODULE_PATH, 'plug-ins')
-    if os.path.exists(pluginsPath):
-        pluginFiles = os.listdir(pluginsPath)
-        if pluginFiles:
-            for pluginFile in pluginFiles:
-                cmds.loadPlugin(os.path.join(pluginsPath, pluginFile))
+    # Add icon folder path
+    iconPaths = mel.eval('getenv "XBMLANGPATH";')
+    iconPaths += ';{}/icons'.format(MODULE_PATH)
+    mel.eval('putenv "XBMLANGPATH" "{}";'.format(iconPaths))
 
 
 def addShelfButtons():
@@ -97,3 +88,29 @@ def getCurrentShelf():
     curShelf = cmds.tabLayout(shelf, query=True, selectTab=True)
 
     return curShelf
+
+
+def createModuleFile():
+    moduleFileName = '{}.mod'.format(MODULE_NAME)
+
+    contentsBlock = '''+ MAYAVERSION:{3} {0} {1} {2}
+
+'''
+    contents = ''
+    for availVersion in AVAILABLE_VERSIONS:
+        contents += contentsBlock.format(MODULE_NAME, MODULE_VERSION, MODULE_PATH, availVersion)
+
+    with open(os.path.join(getModulesDirectory(), moduleFileName), 'w') as f:
+        f.write(contents)
+
+
+def getModulesDirectory():
+    modulesDir = None
+
+    mayaAppDir = cmds.internalVar(uad=True)
+    modulesDir = os.path.join(mayaAppDir, 'modules')
+
+    if not os.path.exists(modulesDir):
+        os.mkdir(modulesDir)
+
+    return modulesDir
