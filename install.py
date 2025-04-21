@@ -8,6 +8,7 @@ Description:
 
 import os
 import sys
+import imp
 
 import maya.cmds as cmds
 import maya.mel as mel
@@ -15,6 +16,7 @@ import maya.mel as mel
 
 MODULE_PATH = os.path.dirname(__file__).replace('\\', '/')
 MODULE_NAME = MODULE_PATH.rsplit('/', 1)[-1]
+MAYA_VERSION = int(cmds.about(version=True))
 AVAILABLE_VERSIONS = [2022, 2023, 2024]
 MODULE_VERSION = 'any'
 SHELF_ICON_FILE = 'takRetargeterIcon.png'
@@ -30,7 +32,10 @@ trUI.show()
 
 def onMayaDroppedPythonFile(*args, **kwargs):
     removeOldInstallModule()
+
     addEnvPaths()
+    runScripts()
+
     addShelfButtons()
     createModuleFile()
     cmds.confirmDialog(
@@ -66,6 +71,13 @@ def addEnvPaths():
     iconPaths = mel.eval('getenv "XBMLANGPATH";')
     iconPaths += ';{}/icons'.format(MODULE_PATH)
     mel.eval('putenv "XBMLANGPATH" "{}";'.format(iconPaths))
+
+
+def runScripts():
+    # Install python packages
+    # Packages will be installed in "C:\Users\<User Name>\AppData\Roaming\Python\<Python Version>\site-packages"
+    os.putenv('MayaVersion', str(MAYA_VERSION))
+    os.system('{}/install_python_packages.bat'.format(MODULE_PATH))
 
 
 def addShelfButtons():
