@@ -4,7 +4,6 @@ import json
 import types
 
 import maya.cmds as cmds
-import pymel.core as pm
 
 
 class Property(object):
@@ -127,23 +126,24 @@ class CharDefinition(object):
 
     def stancePose(self):
         publicAttrs = [member for member in dir(self) if not member.startswith('_')]
-        pm.undoInfo(openChunk=True)
-        for attr in publicAttrs:
-            attrVal = getattr(self, attr)
-            if isinstance(attrVal, dict):
-                name = attrVal.get('name')
-                translateVal = attrVal.get('translate')
-                rotateVal = attrVal.get('rotate')
-                if name:
-                    name = self.namespace + name
-                    if cmds.objExists(name):
-                        trsf = pm.PyNode(name)
-                        try:
-                            trsf.translate.set(translateVal)
-                        except:
-                            pass
-                        try:
-                            trsf.rotate.set(rotateVal)
-                        except:
-                            pass
-        pm.undoInfo(closeChunk=True)
+        cmds.undoInfo(openChunk=True)
+        try:
+            for attr in publicAttrs:
+                attrVal = getattr(self, attr)
+                if isinstance(attrVal, dict):
+                    name = attrVal.get('name')
+                    translateVal = attrVal.get('translate')
+                    rotateVal = attrVal.get('rotate')
+                    if name:
+                        name = self.namespace + name
+                        if cmds.objExists(name):
+                            try:
+                                cmds.setAttr('{}.translate'.format(name), *translateVal)
+                            except:
+                                pass
+                            try:
+                                cmds.setAttr('{}.rotate'.format(name), *rotateVal)
+                            except:
+                                pass
+        finally:
+            cmds.undoInfo(closeChunk=True)

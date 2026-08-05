@@ -1,11 +1,11 @@
 from weakref import WeakKeyDictionary
-import pymel.core as pm
+import maya.cmds as cmds
 from .charDefinition import CharDefinition
 
 
 PLUG_IN = 'poleVector'
-if not pm.pluginInfo(PLUG_IN, q=True, loaded=True):
-    pm.loadPlugin(PLUG_IN)
+if not cmds.pluginInfo(PLUG_IN, q=True, loaded=True):
+    cmds.loadPlugin(PLUG_IN)
 
 
 class CharDefProperty(object):
@@ -51,14 +51,14 @@ class Retargeter(object):
             if isinstance(sourceAttrVal, dict):
                 src = sourceAttrVal.get('name')
                 trg = targetAttrVal.get('name')
-                if src and pm.objExists(src) and trg and pm.objExists(trg):
+                if src and cmds.objExists(src) and trg and cmds.objExists(trg):
                     if attr == 'root':
-                        pm.parentConstraint(src, trg, mo=True)
+                        cmds.parentConstraint(src, trg, mo=True)
                     else:
                         try:
-                            pm.orientConstraint(src, trg, mo=True)
+                            cmds.orientConstraint(src, trg, mo=True)
                             if attr == 'pelvis':
-                                pm.pointConstraint(src, trg, mo=True)
+                                cmds.pointConstraint(src, trg, mo=True)
                         except:
                             pass
 
@@ -85,54 +85,51 @@ class Retargeter(object):
             targetAttrVal = getattr(self.targetCharDef, attr)
             if isinstance(targetAttrVal, dict):
                 trg = targetAttrVal.get('name')
-                if trg and pm.objExists(trg):
-                    pm.delete(pm.listConnections(trg, d=False, type='constraint'))
+                if trg and cmds.objExists(trg):
+                    constraints = cmds.listConnections(trg, d=False, type='constraint') or []
+                    if constraints:
+                        cmds.delete(constraints)
 
     @staticmethod
     def connectIkLimbCtrls(startObj, middleObj, endObj, ctrl, poleVectorCtrl):
-        # Convert to pymel node object
-        startObj = pm.PyNode(startObj)
-        middleObj = pm.PyNode(middleObj)
-        endObj = pm.PyNode(endObj)
-        ctrl = pm.PyNode(ctrl)
-        poleVectorCtrl = pm.PyNode(poleVectorCtrl)
-
-        pm.pointConstraint(endObj, ctrl, mo=True)
+        cmds.pointConstraint(endObj, ctrl, mo=True)
 
         # Pole vector connection
-        poleVectorLocator = '{0}_poleVector_loc'.format(poleVectorCtrl.name())
-        if not pm.objExists(poleVectorLocator):
-            poleVectorLocator = pm.spaceLocator(n='{0}_poleVector_loc'.format(poleVectorCtrl.name()))
-            poleVectorNode = pm.createNode('poleVector')
-            startObj.worldMatrix >> poleVectorNode.startWorldMatrix
-            middleObj.worldMatrix >> poleVectorNode.middleWorldMatrix
-            endObj.worldMatrix >> poleVectorNode.endWorldMatrix
-            poleVectorNode.outVector >> poleVectorLocator.translate
-        pm.pointConstraint(poleVectorLocator, poleVectorCtrl, mo=False)
+        poleVectorLocatorName = '{0}_poleVector_loc'.format(poleVectorCtrl)
+        if not cmds.objExists(poleVectorLocatorName):
+            poleVectorLocator = cmds.spaceLocator(n=poleVectorLocatorName)[0]
+            poleVectorNode = cmds.createNode('poleVector')
+            cmds.connectAttr('{}.worldMatrix[0]'.format(startObj), '{}.startWorldMatrix'.format(poleVectorNode))
+            cmds.connectAttr('{}.worldMatrix[0]'.format(middleObj), '{}.middleWorldMatrix'.format(poleVectorNode))
+            cmds.connectAttr('{}.worldMatrix[0]'.format(endObj), '{}.endWorldMatrix'.format(poleVectorNode))
+            cmds.connectAttr('{}.outVector'.format(poleVectorNode), '{}.translate'.format(poleVectorLocator))
+        else:
+            poleVectorLocator = poleVectorLocatorName
+        cmds.pointConstraint(poleVectorLocator, poleVectorCtrl, mo=False)
 
     def bake(self):
         bakeCtrls = self._getAllNamesInDefinition()
 
         # Get frame range
-        minFrame = pm.playbackOptions(q=True, min=True)
-        maxFrame = pm.playbackOptions(q=True, max=True)
+        minFrame = cmds.playbackOptions(q=True, min=True)
+        maxFrame = cmds.playbackOptions(q=True, max=True)
 
         # Bake keyframes with viewport refresh off
-        pm.refresh(su=True)
-        pm.select(bakeCtrls, r=True)
-        pm.bakeResults(simulation=True, t=(minFrame, maxFrame))
-        pm.refresh(su=False)
+        cmds.refresh(su=True)
+        cmds.select(bakeCtrls, r=True)
+        cmds.bakeResults(simulation=True, t=(minFrame, maxFrame))
+        cmds.refresh(su=False)
 
         self.disconnect()
 
         # Apply euler filter
-        pm.select(bakeCtrls, r=True)
-        pm.mel.filterCurve()
-        pm.select(cl=True)
+        cmds.select(bakeCtrls, r=True)
+        cmds.filterCurve()
+        cmds.select(cl=True)
 
     def deleteKeyframes(self):
         bakeCtrls = self._getAllNamesInDefinition()
-        pm.cutKey(bakeCtrls)
+        cmds.cutKey(bakeCtrls)
 
     def _getAllNamesInDefinition(self):
         allNames = []
@@ -141,6 +138,6 @@ class Retargeter(object):
             targetAttrVal = getattr(self.targetCharDef, attr)
             if isinstance(targetAttrVal, dict):
                 trg = targetAttrVal.get('name')
-                if trg and pm.objExists(trg):
+                if trg and cmds.objExists(trg):
                     allNames.append(trg)
         return allNames
