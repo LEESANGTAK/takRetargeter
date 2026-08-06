@@ -8,7 +8,7 @@ Description:
 
 import os
 import sys
-import imp
+import importlib as imp
 
 import maya.cmds as cmds
 import maya.mel as mel
